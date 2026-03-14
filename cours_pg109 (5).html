@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bibliothèques — PG109</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2128;
+    --border: #30363d;
+    --accent: #f78166;
+    --accent2: #79c0ff;
+    --accent3: #56d364;
+    --accent4: #d2a8ff;
+    --text: #e6edf3;
+    --text2: #8b949e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; }
+
+  .chapter-title {
+    font-size: 22px; font-weight: 800;
+    color: var(--text); margin-bottom: 28px; letter-spacing: -0.5px;
+  }
+  .chapter-title span        { color: var(--accent); }
+  .chapter-title span.green  { color: var(--accent3); }
+  .chapter-title span.purple { color: var(--accent4); }
+
+  .chapter-divider { height: 1px; background: var(--border); margin: 48px 0 36px; }
+
+  .section { margin-bottom: 32px; }
+
+  .section-title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text2); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 22px 28px; margin-bottom: 12px;
+  }
+  .card p { font-size: 14.5px; line-height: 1.75; color: #cdd9e5; margin-bottom: 12px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    background: #2d333b; border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 6px; color: var(--accent);
+  }
+  code.blue   { color: var(--accent2); }
+  code.green  { color: var(--accent3); }
+  code.purple { color: var(--accent4); }
+
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+
+  .step { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .step-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--bg2);
+  }
+  .step-number {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; flex-shrink: 0;
+  }
+  .step-number.n1 { background: #1e3a4f; color: var(--accent2); border: 1px solid var(--accent2); }
+  .step-number.n2 { background: #2d1f3d; color: var(--accent4); border: 1px solid var(--accent4); }
+  .step-number.n3 { background: #1a3628; color: var(--accent3); border: 1px solid var(--accent3); }
+  .step-label { font-size: 13.5px; font-weight: 700; color: var(--text); }
+  .step-body  { padding: 14px 18px; }
+  .step-desc  { font-size: 13px; color: var(--text2); margin-bottom: 10px; line-height: 1.6; }
+
+  .terminal {
+    background: #0d1117; border: 1px solid #30363d;
+    border-radius: 8px; overflow: hidden; margin-bottom: 12px;
+  }
+  .terminal-bar {
+    background: #21262d; padding: 7px 12px;
+    display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dot.red    { background: #f47067; }
+  .dot.yellow { background: #e3b341; }
+  .dot.green  { background: #56d364; }
+  .terminal-code {
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    line-height: 1.9; color: #e6edf3; overflow-x: auto;
+  }
+  .terminal-code .prompt  { color: var(--accent3); user-select: none; }
+  .terminal-code .cmd     { color: var(--accent2); }
+  .terminal-code .flag    { color: var(--accent); }
+  .terminal-code .file    { color: var(--accent4); }
+  .terminal-code .comment { color: #6e7681; }
+
+  .annot-table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-top: 12px;
+  }
+  .annot-table td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  .annot-table td:first-child { color: var(--accent2); white-space: nowrap; }
+  .annot-table tr:first-child td { font-weight: 600; border-bottom: 2px solid var(--accent); }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 16px;
+  }
+  .option-flag {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700;
+    color: var(--accent); background: #2d1e1e; border: 1px solid #5a2929;
+    border-radius: 5px; padding: 3px 10px; white-space: nowrap; margin-top: 1px;
+  }
+  .option-flag.blue-flag { color: var(--accent2); background: #1a2a3a; border-color: #2a4a6a; }
+  .option-text { font-size: 13.5px; color: #cdd9e5; line-height: 1.6; }
+
+  .note {
+    background: #1a2535; border: 1px solid #2d4a6a;
+    border-left: 3px solid var(--accent2); border-radius: 6px;
+    padding: 11px 15px; font-size: 12.5px; color: #9ecbff;
+    margin-top: 10px; font-family: 'JetBrains Mono', monospace; line-height: 1.6;
+  }
+  .note span { color: var(--accent4); }
+  .note.green {
+    background: #1a2e1a; border-color: #2d5a2d; border-left-color: var(--accent3);
+    color: #7ee787; font-family: 'Syne', sans-serif; font-size: 13.5px;
+  }
+  .note.red {
+    background: #2d1e1e; border-color: #5a2929; border-left-color: var(--accent);
+    color: var(--accent); font-family: 'Syne', sans-serif; font-size: 13.5px;
+  }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .compare-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .compare-card.highlight { border-color: var(--accent3); background: #111d16; }
+  .compare-card h4 {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 8px; color: var(--text2);
+  }
+  .compare-card.highlight h4 { color: var(--accent3); }
+  .compare-card p { font-size: 13.5px; line-height: 1.7; color: #cdd9e5; }
+
+  .styled-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-direction: column; gap: 10px; }
+  .styled-list li { font-size: 13.5px; line-height: 1.65; color: #cdd9e5; padding-left: 20px; position: relative; }
+  .styled-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent3); font-size: 11px; top: 3px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- BIBLIOTHÈQUES STATIQUES            -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-title">Bibliothèques <span>Statiques</span></div>
+
+  <div class="section">
+    <div class="section-title">Pourquoi cette notion ?</div>
+    <div class="card">
+      <p>Imagine que tu as écrit une fonction <code>ticket_nouveau()</code> dans un fichier <code>ticket_tab.c</code>.
+        Cette fonction est utile dans plusieurs programmes différents. Sans bibliothèque, tu devrais
+        à chaque fois recompiler <code>ticket_tab.c</code> et traîner le fichier <code>.o</code> partout — c'est pénible à maintenir,
+        surtout quand tu as des dizaines de fichiers <code>.o</code>.</p>
+      <p>L'idée d'une <strong>bibliothèque statique</strong>, c'est de regrouper un ou plusieurs fichiers objets (<code>.o</code>)
+        dans un seul fichier <code class="purple">.a</code> (pour "archive"). Ça simplifie la distribution et la compilation :
+        au lieu de lister plein de <code>.o</code>, tu lies juste avec une bibliothèque.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Comment ça marche — 3 étapes</div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number n1">1</div>
+          <div class="step-label">Compiler le <code class="blue">.c</code> en <code class="blue">.o</code></div>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Compilation classique sans édition de liens.</div>
+          <div class="terminal">
+            <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+            <div class="terminal-code">
+              <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-c</span> <span class="file">ticket_tab.c</span> <span class="flag">-o</span> <span class="file">ticket_tab.o</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number n2">2</div>
+          <div class="step-label">Créer la bibliothèque statique</div>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">La commande <code>ar</code> (pour "archive") emballe un ou plusieurs <code>.o</code> dans un fichier <code class="purple">.a</code>. Le nom doit respecter la convention <code class="purple">lib*.a</code>.</div>
+          <div class="terminal">
+            <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+            <div class="terminal-code">
+              <span class="prompt">$ </span><span class="cmd">ar</span> <span class="flag">rcs</span> <span class="file">libticket_tab.a</span> <span class="file">ticket_tab.o</span>
+            </div>
+          </div>
+          <div class="note">Convention de nommage : <span>lib</span>[nom]<span>.a</span> → ex : <span>libticket_tab.a</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number n3">3</div>
+          <div class="step-label">Compiler le programme en liant avec la bibliothèque</div>
+        </div>
+        <div class="step-body">
+          <div class="terminal">
+            <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+            <div class="terminal-code">
+              <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">cafeteria_tab</span> <span class="file">cafeteria.c</span> <span class="flag">-L.</span> <span class="flag">-lticket_tab</span>
+            </div>
+          </div>
+          <table class="annot-table">
+            <tr><td>option</td><td>rôle</td><td>valeur ici</td><td>lie avec</td></tr>
+            <tr><td>-o cafeteria_tab</td><td>nom de l'exécutable produit</td><td>—</td><td>—</td></tr>
+            <tr><td>cafeteria.c</td><td>source à compiler</td><td>—</td><td>—</td></tr>
+            <tr><td>-L.</td><td>chercher les .a dans le dossier courant</td><td>.</td><td>—</td></tr>
+            <tr><td>-lticket_tab</td><td>lie avec libticket_tab.a</td><td>libticket_tab.a</td><td>libticket_tab.a</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Options importantes</div>
+    <div class="options">
+      <div class="option-row">
+        <div class="option-flag">-L.</div>
+        <div class="option-text">Dit au compilateur de chercher les bibliothèques dans le dossier courant (<code>.</code>). Tu peux remplacer le point par n'importe quel chemin.</div>
+      </div>
+      <div class="option-row">
+        <div class="option-flag blue-flag">-lticket_tab</div>
+        <div class="option-text">Dit de lier avec <code class="purple">libticket_tab.a</code>. Le préfixe <code>lib</code> et le suffixe <code>.a</code> sont ajoutés automatiquement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- BIBLIOTHÈQUES DYNAMIQUES           -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div class="chapter-title">Bibliothèques <span class="green">Dynamiques</span></div>
+
+  <div class="section">
+    <div class="section-title">Différence avec les statiques</div>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>Statique (.a)</h4>
+        <p>Le code de la bibliothèque est <strong>copié</strong> dans l'exécutable. Il est autonome mais plus gros.</p>
+      </div>
+      <div class="compare-card highlight">
+        <h4>Dynamique (.so)</h4>
+        <p>À la compilation, on met juste un <strong>lien</strong>. Le code n'est <strong>pas</strong> copié — il est chargé en mémoire <strong>au moment où tu lances le programme</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Pourquoi c'est utile ?</div>
+    <div class="card">
+      <p>Imagine que 10 programmes différents utilisent tous <code>ticket_nouveau()</code> :</p>
+      <ul class="styled-list">
+        <li>Avec une bibliothèque <strong>statique</strong> : le code de <code>ticket_nouveau()</code> est copié 10 fois, une fois dans chaque exécutable.</li>
+        <li>Avec une bibliothèque <strong>dynamique</strong> : le fichier <code class="green">libticket_tab.so</code> existe <strong>en un seul exemplaire</strong> sur le disque, et les 10 programmes vont tous le chercher au moment de l'exécution.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Comment on la crée — 2 étapes</div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number n1">1</div>
+          <div class="step-label">Construire la bibliothèque dynamique</div>
+        </div>
+        <div class="step-body">
+          <div class="terminal">
+            <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+            <div class="terminal-code">
+              <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-shared</span> <span class="flag">-fPIC</span> <span class="file">ticket_tab.c</span> <span class="flag">-o</span> <span class="file">libticket_tab.so</span>
+            </div>
+          </div>
+          <div class="options" style="margin-top:12px">
+            <div class="option-row">
+              <div class="option-flag">-shared</div>
+              <div class="option-text">Dit à gcc de produire une bibliothèque partagée, pas un exécutable.</div>
+            </div>
+            <div class="option-row">
+              <div class="option-flag">-fPIC</div>
+              <div class="option-text">"Position Independent Code" — le code machine produit pourra fonctionner <strong>peu importe où</strong> il est chargé en mémoire.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number n2">2</div>
+          <div class="step-label">Compiler le programme en liant avec la bibliothèque</div>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Exactement la même commande que pour la statique !</div>
+          <div class="terminal">
+            <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+            <div class="terminal-code">
+              <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">cafeteria_tab</span> <span class="file">cafeteria.c</span> <span class="flag">-L.</span> <span class="flag">-lticket_tab</span>
+            </div>
+          </div>
+          <div class="note">GCC cherche le <span>.so</span> (dynamique) en priorité avant le <span>.a</span> (statique).</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">La grande différence : à l'exécution</div>
+    <div class="card">
+      <p>Avec la statique, tu fais <code>./cafeteria_tab</code> et ça marche direct.</p>
+      <p>Avec la dynamique, le système doit <strong>trouver</strong> <code class="green">libticket_tab.so</code> au moment du lancement. Si il ne la trouve pas → erreur. Il faut lui dire où chercher avec <code class="blue">LD_LIBRARY_PATH</code> :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">LD_LIBRARY_PATH</span><span class="flag">=$(pwd)</span> <span class="file">./cafeteria_tab</span>
+      </div>
+    </div>
+    <div class="note green">Ça dit "cherche les bibliothèques dynamiques aussi dans le dossier courant".</div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- MANIPULATION DE BIBLIOTHÈQUES      -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div class="chapter-title">Manipulation de <span class="purple">Bibliothèques</span></div>
+
+  <div class="section">
+    <div class="section-title">Les deux commandes utiles</div>
+    <div class="card">
+      <p><code>nm $binaire</code> — liste les <strong>symboles</strong> d'un binaire (noms des fonctions et variables globales). Ça te permet de vérifier ce que contient un <code>.o</code>, un <code>.a</code> ou un <code>.so</code>. Par exemple :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code"><span class="prompt">$ </span><span class="cmd">nm</span> <span class="file">libticket_tab.a</span></div>
+    </div>
+    <div class="card">
+      <p>Tu verrais <code>ticket_nouveau</code> dans la liste → la fonction est bien dans ta bibliothèque.</p>
+      <p><code>ldd $binaire</code> — liste les <strong>bibliothèques dynamiques</strong> dont un exécutable a besoin pour tourner. Par exemple :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code"><span class="prompt">$ </span><span class="cmd">ldd</span> <span class="file">cafeteria_tab</span></div>
+    </div>
+    <div class="note">Ça te montrerait : <span>libticket_tab.so => /home/etudiant/libs/libticket_tab.so</span> — tu vois direct si le système trouve la bibliothèque ou pas.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Les deux variables d'environnement</div>
+    <div class="card">
+      <p>Tu connais déjà <code class="blue">LD_LIBRARY_PATH</code> (pour l'exécution). Il y en a une deuxième :</p>
+      <ul class="styled-list">
+        <li><code class="blue">LIBRARY_PATH</code> → utilisée <strong>à la compilation</strong>. Remplace l'option <code>-L</code>. Au lieu de faire <code>gcc ... -L/home/etudiant/libs</code>, tu peux faire :</li>
+      </ul>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">export</span> <span class="flag">LIBRARY_PATH</span><span style="color:var(--accent)">=</span><span class="file">/home/etudiant/libs</span><br>
+        <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">cafeteria</span> <span class="file">cafeteria.c</span> <span class="flag">-lticket_tab</span>
+      </div>
+    </div>
+    <div class="card">
+      <ul class="styled-list">
+        <li><code class="blue">LD_LIBRARY_PATH</code> → utilisée <strong>à l'exécution</strong>. On en a déjà parlé.</li>
+      </ul>
+    </div>
+    <div class="note green"><strong>LIBRARY_PATH</strong> c'est pour gcc &nbsp;|&nbsp; <strong>LD_LIBRARY_PATH</strong> c'est pour le programme quand il tourne.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Forcer l'utilisation d'une bibliothèque statique</div>
+    <div class="card">
+      <p>Comme on l'a vu, gcc préfère la dynamique (<code class="green">.so</code>) par défaut. Si tu as les deux versions et que tu veux forcer la statique, deux façons :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">cafeteria</span> <span class="file">cafeteria.c</span> <span class="flag">-L.</span> <span class="flag">-l:libticket_tab.a</span>
+      </div>
+    </div>
+    <div class="card">
+      <p>Le <code>-l:</code> avec le nom complet du fichier force gcc à prendre exactement ce fichier. Ou plus simplement, tu donnes directement le fichier :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">cafeteria</span> <span class="file">cafeteria.c</span> <span class="file">libticket_tab.a</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Le conseil important</div>
+    <div class="note red">⚠ Toujours mettre <code style="background:#3d1e1e;border-color:#7a3939;color:var(--accent)">-L</code> et <code style="background:#3d1e1e;border-color:#7a3939;color:var(--accent)">-l</code> à la <strong>fin</strong> de la commande gcc !</div>
+    <div class="card" style="margin-top:12px">
+      <p>Pourquoi ? Parce que gcc traite les arguments dans l'ordre. Il doit d'abord voir les fichiers <code>.c</code> pour savoir quels symboles il lui manque, et ensuite il cherche ces symboles dans les bibliothèques. Si tu mets la bibliothèque avant le <code>.c</code>, gcc ne sait pas encore ce qu'il cherche et il ignore la bibliothèque.</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">cafeteria</span> <span class="file">cafeteria.c</span> <span class="flag">-L.</span> <span class="flag">-lticket_tab</span>    <span class="comment">← BIEN</span><br>
+        <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-L.</span> <span class="flag">-lticket_tab</span> <span class="flag">-o</span> <span class="file">cafeteria</span> <span class="file">cafeteria.c</span>    <span class="comment">← RISQUE DE NE PAS MARCHER</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- FICHIERS D'EN-TÊTE                 -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div class="chapter-title">Fichiers d'<span class="purple">en-tête</span></div>
+
+  <div class="section">
+    <div class="section-title">Résumé</div>
+    <div class="card">
+      <p>Les fichiers <code>.h</code> contiennent les <strong>prototypes</strong> des fonctions. Quand tu utilises une bibliothèque, tu n'as pas le <code>.c</code> mais tu as besoin du <code>.h</code>.</p>
+      <p><strong>Deux vérifications séparées :</strong></p>
+      <ul class="styled-list">
+        <li><code>.h</code> <strong>à la compilation</strong> → vérifie que tu appelles les fonctions correctement (nombre de paramètres, types). Sans <code>.h</code>, juste un <code>warning: implicit declaration of function</code>, aucune vérification.</li>
+        <li><code>.so</code> / <code>.a</code> <strong>à l'édition de liens</strong> → contient le vrai code machine. Le linker vérifie juste que la fonction <strong>existe</strong>, pas les paramètres.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- PKG-CONFIG                         -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div class="chapter-title"><span>pkg-config</span></div>
+
+  <div class="section">
+    <div class="section-title">Le problème</div>
+    <div class="card">
+      <p>Tu veux compiler avec SDL. Mais quelles options passer à gcc exactement ? Où sont les fichiers <code>.h</code> ? Comment s'appelle le <code>-l</code> ? Tu ne sais pas forcément.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">La solution</div>
+    <div class="card">
+      <p>C'est un programme qui te donne <strong>les bonnes options</strong> à passer à gcc. Les bibliothèques bien faites fournissent un fichier <code class="green">.pc</code> qui contient toutes ces informations.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Les trois commandes</div>
+
+    <div class="card"><p><strong>Lister les bibliothèques disponibles :</strong></p></div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">pkg-config</span> <span class="flag">--list-all</span> | <span class="cmd">grep</span> <span class="flag">-i</span> <span class="file">sdl</span>
+      </div>
+    </div>
+    <div class="note green" style="margin-bottom:16px">Ça cherche toutes les bibliothèques installées qui contiennent "sdl" dans le nom.</div>
+
+    <div class="card"><p><strong>Obtenir les options de compilation (les <code>-I</code>, pour trouver les <code>.h</code>) :</strong></p></div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">pkg-config</span> <span class="flag">--cflags</span> <span class="file">sdl2</span>
+      </div>
+    </div>
+    <div class="note" style="margin-bottom:16px">Résultat : <span>-I/usr/include/SDL2 -D_REENTRANT</span> — les fichiers <span>.h</span> de SDL sont dans <span>/usr/include/SDL2</span>.</div>
+
+    <div class="card"><p><strong>Obtenir les options d'édition de liens (les <code>-l</code>) :</strong></p></div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">pkg-config</span> <span class="flag">--libs</span> <span class="file">sdl2</span>
+      </div>
+    </div>
+    <div class="note">Résultat : <span>-lSDL2</span> — pour lier avec SDL, utilise <span>-lSDL2</span>.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">En pratique</div>
+    <div class="card">
+      <p>Au lieu de deviner les options, tu les injectes directement dans gcc :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">gcc</span> <span class="flag">-o</span> <span class="file">mon_jeu</span> <span class="file">mon_jeu.c</span> <span style="color:var(--accent2)">$(pkg-config --cflags sdl2)</span> <span style="color:var(--accent2)">$(pkg-config --libs sdl2)</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <p>Le shell exécute <code>pkg-config</code>, récupère le résultat, et le passe à gcc. Tu n'as rien à retenir par cœur.</p>
+      <p>C'est juste un outil de confort pour ne pas avoir à chercher manuellement où sont installées les bibliothèques sur ton système.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- RÈGLES MAKE                        -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div class="chapter-title">Règles <span>make</span></div>
+
+  <div class="section">
+    <div class="section-title">C'est quoi make ?</div>
+    <div class="card">
+      <p>Tu en as marre de taper <code>gcc -o cafeteria cafeteria.c -L. -lticket_tab</code> à chaque fois ? Et de te rappeler quoi recompiler quand tu modifies un fichier ? <code>make</code> fait tout ça pour toi automatiquement.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">La structure d'une règle</div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="file">cible</span><span style="color:var(--text)">: </span><span class="cmd">source1 source2</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;commande1</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;commande2</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <ul class="styled-list">
+        <li><code>cible</code> → le fichier que tu veux <strong>produire</strong></li>
+        <li><code>source1 source2</code> → les fichiers dont tu as <strong>besoin</strong> pour produire la cible (les dépendances)</li>
+        <li><code>commande1</code>, <code>commande2</code> → ce qu'il faut <strong>exécuter</strong> pour produire la cible</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Comment make réfléchit ?</div>
+    <div class="card">
+      <p>Make regarde la cible et se pose deux questions :</p>
+      <ul class="styled-list">
+        <li><strong>Est-ce que la cible existe ?</strong> Si non → il exécute les commandes.</li>
+        <li><strong>Est-ce que la cible est plus ancienne qu'une de ses sources ?</strong> Si oui → il exécute les commandes, parce que ça veut dire qu'une source a été modifiée depuis la dernière fois.</li>
+      </ul>
+      <p style="margin-top:12px">Si la cible existe et qu'elle est plus récente que toutes ses sources, make ne fait rien. Pas besoin de recompiler.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Exemple concret</div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="file">foo.o</span><span style="color:var(--text)">: </span><span class="cmd">foo.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="flag">-c</span> <span class="file">foo.c</span> <span class="flag">-o</span> <span class="file">foo.o</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <ul class="styled-list">
+        <li>Je veux produire <code>foo.o</code></li>
+        <li>J'ai besoin de <code>foo.c</code></li>
+        <li>Si <code>foo.o</code> n'existe pas <strong>ou</strong> si <code>foo.c</code> a été modifié après la création de <code>foo.o</code> → exécute <code>gcc -c foo.c -o foo.o</code></li>
+      </ul>
+      <p style="margin-top:12px">Si tu ne touches pas à <code>foo.c</code>, make te dit "rien à faire". C'est l'intérêt : <strong>recompiler uniquement ce qui a changé.</strong></p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Le piège classique</div>
+    <div class="note red">⚠ Les commandes doivent commencer par une <strong>tabulation</strong>, pas des espaces ! Si tu mets des espaces, make ne comprend pas et te donne une erreur bizarre. C'est un truc historique pénible mais c'est comme ça.</div>
+  </div>
+
+</div>
+</body>
+</html>
