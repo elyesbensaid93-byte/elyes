@@ -4,19 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bibliothèques — PG109</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d1117;
-    --bg2: #161b22;
-    --bg3: #1c2128;
-    --border: #30363d;
-    --accent: #f78166;
-    --accent2: #79c0ff;
-    --accent3: #56d364;
-    --accent4: #d2a8ff;
-    --text: #e6edf3;
-    --text2: #8b949e;
+    --bg:      #f5f0e8;
+    --bg2:     #ffffff;
+    --bg3:     #ede8df;
+    --border:  #d6cfc3;
+    --accent:  #c0392b;
+    --accent2: #1a6fa8;
+    --accent3: #1e8a4a;
+    --accent4: #7b3fa0;
+    --text:    #1a1612;
+    --text2:   #6b6259;
+    --term-bg: #1e1b16;
+    --term-bg2:#272320;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,7 +26,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
     padding: 40px 20px 80px;
   }
@@ -32,67 +34,77 @@
   .container { max-width: 860px; margin: 0 auto; }
 
   .chapter-title {
-    font-size: 22px; font-weight: 800;
+    font-size: 24px; font-weight: 800;
     color: var(--text); margin-bottom: 28px; letter-spacing: -0.5px;
   }
   .chapter-title span        { color: var(--accent); }
   .chapter-title span.green  { color: var(--accent3); }
   .chapter-title span.purple { color: var(--accent4); }
 
-  .chapter-divider { height: 1px; background: var(--border); margin: 48px 0 36px; }
+  .chapter-divider { height: 2px; background: var(--border); margin: 52px 0 40px; border-radius: 2px; }
 
   .section { margin-bottom: 32px; }
 
   .section-title {
-    font-size: 13px; font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2.5px; text-transform: uppercase;
     color: var(--text2); margin-bottom: 16px;
     display: flex; align-items: center; gap: 10px;
   }
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   .card {
-    background: var(--bg2); border: 1px solid var(--border);
+    background: var(--bg2);
+    border: 1px solid var(--border);
     border-radius: 10px; padding: 22px 28px; margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .card p { font-size: 14.5px; line-height: 1.75; color: #cdd9e5; margin-bottom: 12px; }
+  .card p { font-size: 14.5px; line-height: 1.8; color: #3a332b; margin-bottom: 12px; }
   .card p:last-child { margin-bottom: 0; }
 
   code {
-    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-    background: #2d333b; border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    background: #f0e8dc; border: 1px solid #d6cfc3;
     border-radius: 4px; padding: 1px 6px; color: var(--accent);
   }
-  code.blue   { color: var(--accent2); }
-  code.green  { color: var(--accent3); }
-  code.purple { color: var(--accent4); }
+  code.blue   { color: var(--accent2); background: #e8f0f8; border-color: #c0d4e8; }
+  code.green  { color: var(--accent3); background: #e8f4ec; border-color: #b8dfc4; }
+  code.purple { color: var(--accent4); background: #f0e8f8; border-color: #d0b8e8; }
 
   .steps { display: flex; flex-direction: column; gap: 16px; }
 
-  .step { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .step {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
   .step-header {
     display: flex; align-items: center; gap: 14px;
-    padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--bg2);
+    padding: 12px 20px; border-bottom: 1px solid var(--border);
+    background: var(--bg3);
   }
   .step-number {
     width: 26px; height: 26px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; flex-shrink: 0;
   }
-  .step-number.n1 { background: #1e3a4f; color: var(--accent2); border: 1px solid var(--accent2); }
-  .step-number.n2 { background: #2d1f3d; color: var(--accent4); border: 1px solid var(--accent4); }
-  .step-number.n3 { background: #1a3628; color: var(--accent3); border: 1px solid var(--accent3); }
+  .step-number.n1 { background: #deeaf5; color: var(--accent2); border: 1.5px solid var(--accent2); }
+  .step-number.n2 { background: #ede0f5; color: var(--accent4); border: 1.5px solid var(--accent4); }
+  .step-number.n3 { background: #daf0e3; color: var(--accent3); border: 1.5px solid var(--accent3); }
   .step-label { font-size: 13.5px; font-weight: 700; color: var(--text); }
   .step-body  { padding: 14px 18px; }
   .step-desc  { font-size: 13px; color: var(--text2); margin-bottom: 10px; line-height: 1.6; }
 
+  /* Terminal — reste sombre pour le contraste */
   .terminal {
-    background: #0d1117; border: 1px solid #30363d;
+    background: var(--term-bg); border: 1px solid #3a3530;
     border-radius: 8px; overflow: hidden; margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
   .terminal-bar {
-    background: #21262d; padding: 7px 12px;
-    display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border);
+    background: var(--term-bg2); padding: 7px 12px;
+    display: flex; align-items: center; gap: 6px;
+    border-bottom: 1px solid #3a3530;
   }
   .dot { width: 9px; height: 9px; border-radius: 50%; }
   .dot.red    { background: #f47067; }
@@ -101,13 +113,13 @@
   .terminal-code {
     padding: 12px 16px;
     font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-    line-height: 1.9; color: #e6edf3; overflow-x: auto;
+    line-height: 1.9; color: #e6ddd0; overflow-x: auto;
   }
-  .terminal-code .prompt  { color: var(--accent3); user-select: none; }
-  .terminal-code .cmd     { color: var(--accent2); }
-  .terminal-code .flag    { color: var(--accent); }
-  .terminal-code .file    { color: var(--accent4); }
-  .terminal-code .comment { color: #6e7681; }
+  .terminal-code .prompt  { color: #56d364; user-select: none; }
+  .terminal-code .cmd     { color: #79c0ff; }
+  .terminal-code .flag    { color: #f78166; }
+  .terminal-code .file    { color: #d2a8ff; }
+  .terminal-code .comment { color: #7a7060; }
 
   .annot-table {
     width: 100%; border-collapse: collapse;
@@ -115,7 +127,7 @@
   }
   .annot-table td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text2); vertical-align: top; }
   .annot-table td:first-child { color: var(--accent2); white-space: nowrap; }
-  .annot-table tr:first-child td { font-weight: 600; border-bottom: 2px solid var(--accent); }
+  .annot-table tr:first-child td { font-weight: 600; border-bottom: 2px solid var(--accent); color: var(--text2); }
 
   .options { display: flex; flex-direction: column; gap: 10px; }
   .option-row {
@@ -125,51 +137,205 @@
   }
   .option-flag {
     font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700;
-    color: var(--accent); background: #2d1e1e; border: 1px solid #5a2929;
+    color: var(--accent); background: #faeae8; border: 1px solid #e8c0bc;
     border-radius: 5px; padding: 3px 10px; white-space: nowrap; margin-top: 1px;
   }
-  .option-flag.blue-flag { color: var(--accent2); background: #1a2a3a; border-color: #2a4a6a; }
-  .option-text { font-size: 13.5px; color: #cdd9e5; line-height: 1.6; }
+  .option-flag.blue-flag { color: var(--accent2); background: #e8f0f8; border-color: #c0d4e8; }
+  .option-text { font-size: 13.5px; color: #3a332b; line-height: 1.6; }
 
   .note {
-    background: #1a2535; border: 1px solid #2d4a6a;
+    background: #e8f0f8; border: 1px solid #c0d4e8;
     border-left: 3px solid var(--accent2); border-radius: 6px;
-    padding: 11px 15px; font-size: 12.5px; color: #9ecbff;
+    padding: 11px 15px; font-size: 12.5px; color: #1a5a8a;
     margin-top: 10px; font-family: 'JetBrains Mono', monospace; line-height: 1.6;
   }
   .note span { color: var(--accent4); }
   .note.green {
-    background: #1a2e1a; border-color: #2d5a2d; border-left-color: var(--accent3);
-    color: #7ee787; font-family: 'Syne', sans-serif; font-size: 13.5px;
+    background: #e8f4ec; border-color: #b8dfc4; border-left-color: var(--accent3);
+    color: #1a6a3a; font-family: 'Inter', sans-serif; font-size: 13.5px;
   }
   .note.red {
-    background: #2d1e1e; border-color: #5a2929; border-left-color: var(--accent);
-    color: var(--accent); font-family: 'Syne', sans-serif; font-size: 13.5px;
+    background: #faeae8; border-color: #e8c0bc; border-left-color: var(--accent);
+    color: var(--accent); font-family: 'Inter', sans-serif; font-size: 13.5px;
   }
 
   .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-  .compare-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
-  .compare-card.highlight { border-color: var(--accent3); background: #111d16; }
+  .compare-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .compare-card.highlight { border-color: #b8dfc4; background: #f0f9f3; }
   .compare-card h4 {
     font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
     text-transform: uppercase; margin-bottom: 8px; color: var(--text2);
   }
   .compare-card.highlight h4 { color: var(--accent3); }
-  .compare-card p { font-size: 13.5px; line-height: 1.7; color: #cdd9e5; }
+  .compare-card p { font-size: 13.5px; line-height: 1.7; color: #3a332b; }
 
   .styled-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-direction: column; gap: 10px; }
-  .styled-list li { font-size: 13.5px; line-height: 1.65; color: #cdd9e5; padding-left: 20px; position: relative; }
+  .styled-list li { font-size: 13.5px; line-height: 1.65; color: #3a332b; padding-left: 20px; position: relative; }
   .styled-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent3); font-size: 11px; top: 3px; }
+
+  /* ── LANDING PAGE ── */
+  .landing {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 60px 20px;
+    margin: -40px -20px 60px;
+    background: radial-gradient(ellipse at 60% 40%, #ede0c8 0%, #f5f0e8 60%);
+  }
+
+  .landing-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); background: #faeae8;
+    border: 1px solid #e8c0bc; border-radius: 20px;
+    padding: 5px 16px; margin-bottom: 24px;
+  }
+
+  .landing h1 {
+    font-size: 48px; font-weight: 800;
+    line-height: 1.1; letter-spacing: -1.5px;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .landing h1 span { color: var(--accent); }
+
+  .landing-sub {
+    font-size: 16px; color: var(--text2);
+    margin-bottom: 56px; line-height: 1.6;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px; width: 100%; max-width: 860px;
+  }
+
+  .nav-btn {
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 8px; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 22px; text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .nav-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+  .nav-btn-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    padding: 2px 8px; border-radius: 3px; margin-bottom: 2px;
+  }
+  .nav-btn-title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; text-align: left; }
+  .nav-btn-icon { font-size: 18px; align-self: flex-end; margin-top: auto; }
+
+  .nav-btn.c1 { border-color: #e8c0bc; }
+  .nav-btn.c1:hover { border-color: var(--accent); }
+  .nav-btn.c1 .nav-btn-num { background: #faeae8; color: var(--accent); }
+
+  .nav-btn.c2 { border-color: #b8dfc4; }
+  .nav-btn.c2:hover { border-color: var(--accent3); }
+  .nav-btn.c2 .nav-btn-num { background: #e8f4ec; color: var(--accent3); }
+
+  .nav-btn.c3 { border-color: #d0b8e8; }
+  .nav-btn.c3:hover { border-color: var(--accent4); }
+  .nav-btn.c3 .nav-btn-num { background: #f0e8f8; color: var(--accent4); }
+
+  .nav-btn.c4 { border-color: #c0d4e8; }
+  .nav-btn.c4:hover { border-color: var(--accent2); }
+  .nav-btn.c4 .nav-btn-num { background: #e8f0f8; color: var(--accent2); }
+
+  .nav-btn.c5 { border-color: #e0d8b8; }
+  .nav-btn.c5:hover { border-color: #a08820; }
+  .nav-btn.c5 .nav-btn-num { background: #f8f0d8; color: #a08820; }
+
+  .nav-btn.c6 { border-color: #c0e0c8; }
+  .nav-btn.c6:hover { border-color: var(--accent3); }
+  .nav-btn.c6 .nav-btn-num { background: #e0f4e8; color: var(--accent3); }
+
+  .nav-btn.c7 { border-color: #f0d8b8; }
+  .nav-btn.c7:hover { border-color: #c07820; }
+  .nav-btn.c7 .nav-btn-num { background: #fdf0d8; color: #c07820; }
+
+  /* ── BACK TO TOP ── */
+  .back-top {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 50%; width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; color: var(--text2); font-size: 18px;
+    transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 100;
+  }
+  .back-top:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 </style>
 </head>
 <body>
-<div class="container">
+
+<!-- ── BOUTON RETOUR EN HAUT ── -->
+<a href="#top" class="back-top" title="Retour en haut">↑</a>
+
+<div id="top" class="container">
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- PAGE DE GARDE                           -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="landing">
+    <div class="landing-badge">PG109 — Outils de Programmation</div>
+    <h1>Cours <span>Bibliothèques</span><br>& Compilation</h1>
+    <p class="landing-sub">Clique sur un thème pour y accéder directement</p>
+
+    <div class="nav-grid">
+      <a href="#statiques" class="nav-btn c1">
+        <div class="nav-btn-num">01</div>
+        <div class="nav-btn-title">Bibliothèques Statiques</div>
+        <div class="nav-btn-icon">📦</div>
+      </a>
+      <a href="#dynamiques" class="nav-btn c2">
+        <div class="nav-btn-num">02</div>
+        <div class="nav-btn-title">Bibliothèques Dynamiques</div>
+        <div class="nav-btn-icon">🔗</div>
+      </a>
+      <a href="#manipulation" class="nav-btn c3">
+        <div class="nav-btn-num">03</div>
+        <div class="nav-btn-title">Manipulation de Bibliothèques</div>
+        <div class="nav-btn-icon">🔧</div>
+      </a>
+      <a href="#entetes" class="nav-btn c4">
+        <div class="nav-btn-num">04</div>
+        <div class="nav-btn-title">Fichiers d'en-tête</div>
+        <div class="nav-btn-icon">📄</div>
+      </a>
+      <a href="#pkgconfig" class="nav-btn c5">
+        <div class="nav-btn-num">05</div>
+        <div class="nav-btn-title">pkg-config</div>
+        <div class="nav-btn-icon">⚙️</div>
+      </a>
+      <a href="#make" class="nav-btn c6">
+        <div class="nav-btn-num">06</div>
+        <div class="nav-btn-title">Règles make</div>
+        <div class="nav-btn-icon">🛠️</div>
+      </a>
+      <a href="#makefile" class="nav-btn c2">
+        <div class="nav-btn-num">07</div>
+        <div class="nav-btn-title">Makefile</div>
+        <div class="nav-btn-icon">📋</div>
+      </a>
+      <a href="#variables" class="nav-btn c7">
+        <div class="nav-btn-num">08</div>
+        <div class="nav-btn-title">Variables dans un Makefile</div>
+        <div class="nav-btn-icon">📝</div>
+      </a>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════ -->
   <!-- BIBLIOTHÈQUES STATIQUES            -->
   <!-- ═══════════════════════════════════ -->
 
-  <div class="chapter-title">Bibliothèques <span>Statiques</span></div>
+  <div id="statiques" class="chapter-title">Bibliothèques <span>Statiques</span></div>
 
   <div class="section">
     <div class="section-title">Pourquoi cette notion ?</div>
@@ -265,7 +431,7 @@
   <!-- ═══════════════════════════════════ -->
 
   <div class="chapter-divider"></div>
-  <div class="chapter-title">Bibliothèques <span class="green">Dynamiques</span></div>
+  <div id="dynamiques" class="chapter-title">Bibliothèques <span class="green">Dynamiques</span></div>
 
   <div class="section">
     <div class="section-title">Différence avec les statiques</div>
@@ -361,7 +527,7 @@
   <!-- ═══════════════════════════════════ -->
 
   <div class="chapter-divider"></div>
-  <div class="chapter-title">Manipulation de <span class="purple">Bibliothèques</span></div>
+  <div id="manipulation" class="chapter-title">Manipulation de <span class="purple">Bibliothèques</span></div>
 
   <div class="section">
     <div class="section-title">Les deux commandes utiles</div>
@@ -448,7 +614,7 @@
   <!-- ═══════════════════════════════════ -->
 
   <div class="chapter-divider"></div>
-  <div class="chapter-title">Fichiers d'<span class="purple">en-tête</span></div>
+  <div id="entetes" class="chapter-title">Fichiers d'<span class="purple">en-tête</span></div>
 
   <div class="section">
     <div class="section-title">Résumé</div>
@@ -467,7 +633,7 @@
   <!-- ═══════════════════════════════════ -->
 
   <div class="chapter-divider"></div>
-  <div class="chapter-title"><span>pkg-config</span></div>
+  <div id="pkgconfig" class="chapter-title"><span>pkg-config</span></div>
 
   <div class="section">
     <div class="section-title">Le problème</div>
@@ -536,7 +702,7 @@
   <!-- ═══════════════════════════════════ -->
 
   <div class="chapter-divider"></div>
-  <div class="chapter-title">Règles <span>make</span></div>
+  <div id="make" class="chapter-title">Règles <span>make</span></div>
 
   <div class="section">
     <div class="section-title">C'est quoi make ?</div>
@@ -598,6 +764,224 @@
   <div class="section">
     <div class="section-title">Le piège classique</div>
     <div class="note red">⚠ Les commandes doivent commencer par une <strong>tabulation</strong>, pas des espaces ! Si tu mets des espaces, make ne comprend pas et te donne une erreur bizarre. C'est un truc historique pénible mais c'est comme ça.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- MAKEFILE                           -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div id="makefile" class="chapter-title"><span>Makefile</span></div>
+
+  <div class="section">
+    <div class="section-title">C'est quoi make ?</div>
+    <div class="card">
+      <p>Un programme qui compile automatiquement ton projet. Il sait quoi recompiler quand tu modifies un fichier, et il le fait tout seul.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Structure d'une règle</div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="file">cible</span><span style="color:var(--text)">: </span><span class="cmd">source1 source2</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;commande</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <ul class="styled-list">
+        <li><strong>Cible</strong> = ce que tu veux obtenir (ex : <code>pacman</code>, <code>main.o</code>)</li>
+        <li><strong>Sources</strong> = ce dont tu as besoin pour le fabriquer (les dépendances)</li>
+        <li><strong>Commande</strong> = ce qu'il faut exécuter (précédée d'une <strong>tabulation</strong>, pas d'espaces !)</li>
+      </ul>
+      <p style="margin-top:12px">Make exécute la commande si la cible n'existe pas ou si elle est plus ancienne qu'une de ses sources.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Exemple complet</div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">main.o</span><span style="color:var(--text)">: </span><span class="cmd">main.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="flag">-c</span> <span class="file">main.c</span> <span class="flag">-o</span> <span class="file">main.o</span><br>
+        <br>
+        <span class="file">player.o</span><span style="color:var(--text)">: </span><span class="cmd">player.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="flag">-c</span> <span class="file">player.c</span> <span class="flag">-o</span> <span class="file">player.o</span><br>
+        <br>
+        <span class="file">pacman</span><span style="color:var(--text)">: </span><span class="cmd">main.o player.o</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="file">main.o player.o</span> <span class="flag">-o</span> <span class="file">pacman</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <p>Si tu modifies juste <code>player.c</code>, make recompile seulement <code>player.o</code> puis <code>pacman</code>. Il ne touche pas à <code>main.o</code>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Règle <code>all</code></div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">all</span><span style="color:var(--text)">: </span><span class="cmd">pacman</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <p>Par convention, <code>all</code> est la première règle du Makefile. Quand tu tapes juste <code>make</code> sans argument, make exécute la première règle. En mettant <code>all: pacman</code> en tête, tu t'assures que <code>make</code> tout court compile le projet entier.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- VARIABLES DANS UN MAKEFILE         -->
+  <!-- ═══════════════════════════════════ -->
+
+  <div class="chapter-divider"></div>
+  <div id="variables" class="chapter-title">Variables dans un <span>Makefile</span></div>
+
+  <div class="section">
+    <div class="section-title">Pourquoi des variables ?</div>
+    <div class="card">
+      <p>Imagine que tu écris <code>gcc -Wall -Werror -std=c99</code> dans 10 règles différentes. Si tu veux changer une option, tu dois modifier 10 lignes. Avec une variable, tu changes <strong>une seule ligne</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Comment ça marche ?</div>
+    <div class="card"><p>Tu définis une variable :</p></div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">CC</span> <span style="color:var(--text)">= </span><span class="cmd">gcc</span><br>
+        <span class="file">CFLAGS</span> <span style="color:var(--text)">= </span><span class="flag">-Wall -Werror -std=c99</span>
+      </div>
+    </div>
+    <div class="card"><p>Tu l'utilises avec <code>$(NOM)</code> :</p></div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">main.o</span><span style="color:var(--text)">: </span><span class="cmd">main.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--accent4)">$(CC)</span> <span style="color:var(--accent4)">$(CFLAGS)</span> <span class="flag">-c</span> <span class="file">main.c</span> <span class="flag">-o</span> <span class="file">main.o</span>
+      </div>
+    </div>
+    <div class="card">
+      <p>Make remplace <code>$(CC)</code> par <code>gcc</code> et <code>$(CFLAGS)</code> par <code>-Wall -Werror -std=c99</code> avant d'exécuter la commande.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Modifier une variable depuis le terminal</div>
+    <div class="card">
+      <p>Tu peux écraser la valeur d'une variable quand tu lances make :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+      <div class="terminal-code">
+        <span class="prompt">$ </span><span class="cmd">make</span> <span class="file">foo</span> <span class="flag">CC=clang</span>
+      </div>
+    </div>
+    <div class="card">
+      <p>Là, même si le Makefile dit <code>CC = gcc</code>, make utilisera <code>clang</code> à la place. La valeur donnée en argument <strong>écrase</strong> celle du Makefile.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">= vs ?=</div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">CC</span> <span style="color:var(--text)">= </span><span class="cmd">gcc</span>
+      </div>
+    </div>
+    <div class="card"><p>Ça définit <code>CC</code> à <code>gcc</code> <strong>toujours</strong>, même si une variable d'environnement <code>CC</code> existe déjà.</p></div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">CC</span> <span style="color:var(--accent4)">?=</span> <span class="cmd">gcc</span>
+      </div>
+    </div>
+    <div class="card">
+      <p>Le <code>?=</code> veut dire "définis <code>CC</code> à <code>gcc</code> seulement si <code>CC</code> n'a pas déjà une valeur". Si tu as fait <code>export CC=clang</code> dans ton terminal avant, le Makefile garde <code>clang</code>.</p>
+    </div>
+    <div class="note">
+      En résumé :<br>
+      <span>NOM = VALEUR</span> → définit toujours<br>
+      <span>NOM ?= VALEUR</span> → définit seulement si pas déjà défini<br>
+      <span>$(NOM)</span> → utilise la variable<br>
+      <span>make foo NOM=truc</span> → écrase la variable depuis le terminal
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Exemple complet — sans vs avec variables</div>
+    <div class="card"><p>Sans variables, ton Makefile ressemble à ça :</p></div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">main.o</span><span style="color:var(--text)">: </span><span class="cmd">main.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="flag">-Wall -Werror -std=c99 -c</span> <span class="file">main.c</span> <span class="flag">-o</span> <span class="file">main.o</span><br><br>
+        <span class="file">player.o</span><span style="color:var(--text)">: </span><span class="cmd">player.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="flag">-Wall -Werror -std=c99 -c</span> <span class="file">player.c</span> <span class="flag">-o</span> <span class="file">player.o</span><br><br>
+        <span class="file">enemy.o</span><span style="color:var(--text)">: </span><span class="cmd">enemy.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="flag">-Wall -Werror -std=c99 -c</span> <span class="file">enemy.c</span> <span class="flag">-o</span> <span class="file">enemy.o</span><br><br>
+        <span class="file">pacman</span><span style="color:var(--text)">: </span><span class="cmd">main.o player.o enemy.o</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cmd">gcc</span> <span class="file">main.o player.o enemy.o</span> <span class="flag">-o</span> <span class="file">pacman</span>
+      </div>
+    </div>
+    <div class="card"><p>Tu vois <code>gcc -Wall -Werror -std=c99</code> répété 3 fois. Tu veux ajouter <code>-g</code> pour le débogage ? Tu dois modifier <strong>3 lignes</strong>.</p></div>
+
+    <div class="card" style="margin-top:16px"><p>Avec des variables :</p></div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">CC</span> <span style="color:var(--text)">= </span><span class="cmd">gcc</span><br>
+        <span class="file">CFLAGS</span> <span style="color:var(--text)">= </span><span class="flag">-Wall -Werror -std=c99</span><br><br>
+        <span class="file">main.o</span><span style="color:var(--text)">: </span><span class="cmd">main.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--accent4)">$(CC)</span> <span style="color:var(--accent4)">$(CFLAGS)</span> <span class="flag">-c</span> <span class="file">main.c</span> <span class="flag">-o</span> <span class="file">main.o</span><br><br>
+        <span class="file">player.o</span><span style="color:var(--text)">: </span><span class="cmd">player.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--accent4)">$(CC)</span> <span style="color:var(--accent4)">$(CFLAGS)</span> <span class="flag">-c</span> <span class="file">player.c</span> <span class="flag">-o</span> <span class="file">player.o</span><br><br>
+        <span class="file">enemy.o</span><span style="color:var(--text)">: </span><span class="cmd">enemy.c</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--accent4)">$(CC)</span> <span style="color:var(--accent4)">$(CFLAGS)</span> <span class="flag">-c</span> <span class="file">enemy.c</span> <span class="flag">-o</span> <span class="file">enemy.o</span><br><br>
+        <span class="file">pacman</span><span style="color:var(--text)">: </span><span class="cmd">main.o player.o enemy.o</span><br>
+        <span style="color:var(--text2)">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--accent4)">$(CC)</span> <span class="file">main.o player.o enemy.o</span> <span class="flag">-o</span> <span class="file">pacman</span>
+      </div>
+    </div>
+    <div class="card">
+      <p>Tu veux ajouter <code>-g</code> ? Tu changes <strong>une seule ligne</strong> :</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-left:8px">makefile</span>
+      </div>
+      <div class="terminal-code">
+        <span class="file">CFLAGS</span> <span style="color:var(--text)">= </span><span class="flag">-Wall -Werror -std=c99 -g</span>
+      </div>
+    </div>
   </div>
 
 </div>
